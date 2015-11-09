@@ -2,7 +2,7 @@
   "name": "spencerwalden.net",
   "version": "1.0.0",
   "description": "my personal website",
-  "main": "app.js",
+  "main": "webServer.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,6 +17,10 @@
   },
   "homepage": "https://github.com/LeMasque/website#readme",
   "dependencies": {
-    "socket.io": "^1.3.7"
+    "chalk": "^1.1.1",
+    "express": "^4.13.3",
+    "morgan": "^1.6.1",
+    "socket.io": "^1.3.7",
+    "zxcvbn": "^4.1.1"
   }
 }
