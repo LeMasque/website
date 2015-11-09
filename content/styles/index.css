@@ -53,10 +53,10 @@ a:hover, a:focus {
 }
 
 #comet {
-	background: url("/images/shooting-star.png") fixed no-repeat;
+	background: url("/images/comet.png") fixed no-repeat;
 	background-position: 110% 1100px;
 	background-size: 250px 250px;
-	opacity: 0.6;
+	opacity: 1.0;
 	z-index: -3;
 }
 

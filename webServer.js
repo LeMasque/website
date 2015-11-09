@@ -12,6 +12,7 @@ var logger = require("morgan");
 var chalk = require("chalk");
 
 var serverPort = 8000;
+__dirname += "/content";
 
 /*
  *	String.startsWith polyfill
@@ -23,11 +24,10 @@ if (!String.prototype.startsWith) {
 	};
 }
 
-permitAccessTo("content");
-permitAccessTo("content/css");
-permitAccessTo("content/scripts");
-permitAccessTo("content/views");
-permitAccessTo("content/images");
+permitAccessTo("/styles");
+permitAccessTo("/scripts");
+permitAccessTo("/views");
+permitAccessTo("/images");
 
 app.use(logger("dev")); // enable logging
 
@@ -40,11 +40,11 @@ var users = {};
 /********************************** ROUTING **********************************/
 
 app.get("/", function(req, res) {
-	res.sendFile(__dirname + "/content/views/index.html");
+	res.sendFile(__dirname + "/views/index.html");
 });
 
 app.get("/chat", function(req, res) {
-	res.sendFile(__dirname + "/content/views/chat.html");
+	res.sendFile(__dirname + "/views/chat.html");
 });
 
 /****************************** EVENT HANDLERS *******************************/
