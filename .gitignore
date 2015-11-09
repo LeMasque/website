@@ -1,0 +1,3 @@
+# Dev files
+.*.swp
+/node_modules

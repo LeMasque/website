@@ -1,0 +1,117 @@
+
+/*
+*/
+
+.navbar {
+	/*top: 3px;*/
+	border-bottom: 1px solid darkgrey;
+	margin-bottom: 0;
+	background-color: #FFF;
+}
+
+.bar {
+	/*background-color: #F8F5F8;*/
+}
+
+body {
+	color: #7800E3;
+	background: url("/images/background.png");
+}
+
+a {
+	color: #5600A2;
+}
+/*
+a:visited {
+	color: #A641FF;
+}
+*/
+a:hover, a:focus {
+	color: #CCCC00;
+}
+
+.parallax {
+	position: absolute;
+	width: 100%;
+	top: 0;
+	height: 3000px;
+}
+
+#moon {
+	background: url("../images/moon.png") fixed no-repeat;
+	background-position: -80% -220px;
+	background-size: 60% 90%;
+	opacity: 0.9;
+	z-index: -1;
+}
+
+#jupiter {
+	background: url("../images/jupiter.png") fixed no-repeat;
+	background-position: 92% 400px;
+	background-size: 60px 60px;
+	opacity: 0.9;
+	z-index: -2;
+}
+
+#comet {
+	background: url("../images/shooting-star.png") fixed no-repeat;
+	background-position: 110% 1100px;
+	background-size: 250px 250px;
+	opacity: 0.6;
+	z-index: -3;
+}
+
+/*********** BLOG POST STUFF ***************/
+
+#b {
+	border-radius: 20px;
+	margin-top: 150px;
+	position: relative;
+	padding-left: 25px;
+	background-color: rgba(255,255,255,40);
+	overflow: hidden;
+	clear: both;
+}
+
+#bHead-container {
+	border-bottom: 1px solid #ddd;
+}
+
+h1 {
+	font-size: 36pt;
+}
+
+#bSub {
+	font-size: 18pt;
+}
+
+h2 {
+
+}
+.post > p:last-child {
+	margin-bottom: 20px;
+}
+
+.subtext {
+	font-family: "Times New Roman", serif;
+	color: #aaa;
+}
+
+/************* SIDE BAR STUFF *****************/
+
+.sidebar {
+	padding: 15px;
+	margin-top: 15px;
+	border: 1px solid #ddd;
+	background-color: #F8F5F8;
+	overflow: hidden;
+}
+
+.sidebar-header {
+	text-decoration: underline;
+	font-weight: bold;
+}
+
+.archive-item {
+	margin-left: 15px;
+}
