@@ -35,7 +35,8 @@ http.listen(serverPort, function(){
 	serverLog(1, "Server listening on *:" + serverPort);
 });
 
-var users = {};
+var chatUsers = {};
+var num = 0;
 
 /********************************** ROUTING **********************************/
 
@@ -51,11 +52,13 @@ app.get("/chat", function(req, res) {
 
 io.on("connection", function(socket){
 	serverLog(5, "user connected");
-	//users[user.uin] = user;
+  var user = createChatUser();
+	chatUsers[user.uin] = user;
+
 	socket.on("chat message", function(content) {
 		if (content.trim()) {
 			serverLog(2, "content: " + content);
-			io.emit("chat message", content);
+			io.emit("chat message", content, user, formTimeStamp());
 		}
 	});
 	socket.on("disconnect", function() {
@@ -65,6 +68,26 @@ io.on("connection", function(socket){
 
 
 /***************************** MAIN FUNCTIONS ********************************/
+
+function createChatUser() {
+  var colors = [
+    "Magenta",
+    "DeepPink",
+    "Crimson",
+    "Chartreuse",
+    "Coral",
+    "Cyan",
+    "Navy",
+    "Blue",
+    "Red"
+  ];
+  return {
+    "uin": ++num,
+    "username": "Anonymous #" + num,
+    "color": colors[num],
+    "connected": formTimeStamp()
+  };
+}
 
 
 /**************************** HELPER FUNCTIONS ******************************/
@@ -148,4 +171,20 @@ function badType(fName, thing, expected) {
 	var blah = fName + " type mismatch; a " + typeof thing + " was provided ";
 	blah += "-- expected a " + expected;
 	serverLog(-1, blah);
+}
+
+/*
+ *  @description: Generates a nicely formatted timestamp.
+ *  @param {Date} — A Date object for the Date/Time for which you want a formatted timestamp.
+ *  @returns {String} — The formatted timestamp.
+ */
+function formTimeStamp(sendTime) {
+  var time = new Date(sendTime instanceof Date ? sendTime : "");
+  var hh   = time.getHours();
+  var min  = time.getMinutes();
+  var sec  = time.getSeconds();
+  var mm   = (min < 10 ? "0" + min : min);
+  var ss   = (sec < 10 ? "0" + sec : sec);
+  var ts   = "<" + hh + ":" + mm + ":" + ss + "> ";
+  return ts;
 }
