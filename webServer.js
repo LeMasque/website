@@ -52,13 +52,14 @@ app.get("/chat", function(req, res) {
 
 io.on("connection", function(socket){
 	serverLog(5, "user connected");
-  var user = createChatUser();
+  var user = createChatUser(socket);
 	chatUsers[user.uin] = user;
+  io.sockets.connected[user.socket].emit("connected", user.username);
 
-	socket.on("chat message", function(content) {
+	socket.on("chat message", function(content, timeStamp) {
 		if (content.trim()) {
 			serverLog(2, "content: " + content);
-			io.emit("chat message", content, user, formTimeStamp());
+			io.emit("chat message", content, user, formTimeStamp(timeStamp));
 		}
 	});
 	socket.on("disconnect", function() {
@@ -69,24 +70,28 @@ io.on("connection", function(socket){
 
 /***************************** MAIN FUNCTIONS ********************************/
 
-function createChatUser() {
+function createChatUser(socket) {
   var colors = [
-    "Magenta",
+    "DarkMagenta",
     "DeepPink",
     "Crimson",
-    "Chartreuse",
-    "Coral",
-    "Cyan",
+    "Black",
+    "DarkGreen",
+    "Brown",
     "Navy",
     "Blue",
     "Red"
   ];
-  return {
+  var user = {
     "uin": ++num,
     "username": "Anonymous #" + num,
-    "color": colors[num],
-    "connected": formTimeStamp()
+    "color": colors[num % colors.length],
+    "connected": formTimeStamp(),
+    "socket": socket.id
   };
+  serverLog(1, "uin: " + user.uin + " | name: " + user.username + ".");
+  serverLog(1, "connected: " + user.connected + "| color: " + user.color);
+  return user;
 }
 
 
@@ -179,12 +184,12 @@ function badType(fName, thing, expected) {
  *  @returns {String} — The formatted timestamp.
  */
 function formTimeStamp(sendTime) {
-  var time = new Date(sendTime instanceof Date ? sendTime : "");
+  var time = new Date(sendTime instanceof Date ? sendTime : Date.now());
   var hh   = time.getHours();
   var min  = time.getMinutes();
   var sec  = time.getSeconds();
   var mm   = (min < 10 ? "0" + min : min);
   var ss   = (sec < 10 ? "0" + sec : sec);
-  var ts   = "<" + hh + ":" + mm + ":" + ss + "> ";
+  var ts   = "[" + hh + ":" + mm + ":" + ss + "]";
   return ts;
 }

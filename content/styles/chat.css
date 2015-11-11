@@ -32,10 +32,9 @@ a:hover, a:focus {
 }
 
 #footer {
-	position: absolute;
+	position: fixed;
 	bottom: 0;
 	width: 100%;
-	height: 60px; /*************** Correspond this with footer height ********/
 	border-top: 1px solid lightgrey;
 	background-color: #F5F3F5;
 }
@@ -47,18 +46,107 @@ a:hover, a:focus {
 #chatLabel {
 	text-align: center;
 	vertical-align: bottom;
-}
-
-#threadContainer {
-	margin-top: 15px;
-	margin-bottom: 60px; /********** Correspond this with footer height ******/
-	border: 1px solid darkgrey;
-}
-
-#thread li:nth-child(even) {
-	background-color: #F5F3F5;
+	margin-top: 5px;
+	font-size: 12px;
 }
 
 #message, #sendMessage, #chatLabel {
 	width: 100%;
+}
+
+/***************** middle section ******************/
+
+#threadContainer {
+	margin-top: 15px;
+}
+
+.box li:nth-child(even) {
+	background-color: #E5E3E5;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+}
+
+.box li:nth-child(odd) {
+	background-color: #AAA;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+}
+
+.box li {
+	word-wrap: break-word;
+	padding: 5px 10px;
+}
+
+.box {
+	margin-bottom: 5px;
+}
+
+.timeStamp {
+	float: right;
+	color: #7800E3;
+}
+
+/*** If screen is less than screen-md-min width, do this instead ***/
+@media all and (max-width: 992px) {
+	.box li {
+		width: 100%;
+	}
+
+	.messages {
+		margin-bottom: 10px;
+	}
+
+	#footer {
+		height: 90px;
+	}
+
+	#threadContainer {
+		margin-bottom: 95px;
+	}
+
+	#chatLabel {
+		font-size: 14px !important;
+	}
+}
+
+/*** if screen is less than screen-sm-min width, do this instead ***/
+@media all and (max-width: 768px) {
+	#footer {
+		height: 120px;
+	}
+
+	#threadContainer {
+		margin-bottom: 125px;
+	}
+	
+	#message {
+		margin-bottom: 5px;
+	}
+}
+
+/*** If screen is greater than screen-md-min width, do this instead. ***/
+@media all and (min-width: 992px) {
+	.timeStamp {
+		float: left;
+	}
+
+	#thread li {
+		border-radius: 0;
+	}
+
+	.messages {
+		border-left: 1px solid #777;
+	}
+	
+	.from {
+		float: right;
+	}
+
+	#footer {
+		height: 60px;
+	}
+
+	#threadContainer {
+		margin-bottom: 65px;
+	}
 }
