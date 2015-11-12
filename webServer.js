@@ -53,7 +53,7 @@ app.get("/chat", function(req, res) {
 io.on("connection", function(socket){
 	serverLog(5, "user connected");
   var user = createChatUser(socket);
-	chatUsers[user.uin] = user;
+	chatUsers[user.socket] = user;
   io.sockets.connected[user.socket].emit("connected", user.username);
 
 	socket.on("chat message", function(content, timeStamp) {
@@ -62,6 +62,21 @@ io.on("connection", function(socket){
 			io.emit("chat message", content, user, formTimeStamp(timeStamp));
 		}
 	});
+
+  socket.on("chat setName", function(desired) {
+    var cool = false;
+    if (!/Anonymous\s*#\d.*/.test(desired) && !/.*Masq.*Chat.*/.test(desired)){
+      if (desired.length <= 20) {
+        cool = true;
+        serverLog(5, "user " + user.username + " successfully changed their name to \"" + desired + "\"");
+        chatUsers[user.socket].username = desired;
+      }
+    }
+    if (!cool) {
+      serverLog(0, "user " + user.username + " attempted to change their name to \"" + desired + "\"");
+    }
+    io.sockets.connected[user.socket].emit("chat setName", cool, desired);
+  });
 	socket.on("disconnect", function() {
 		serverLog(0, "user disconnected");
 	});
@@ -83,13 +98,12 @@ function createChatUser(socket) {
     "Red"
   ];
   var user = {
-    "uin": ++num,
-    "username": "Anonymous #" + num,
+    "username": "Anonymous #" + ++num,
     "color": colors[num % colors.length],
     "connected": formTimeStamp(),
     "socket": socket.id
   };
-  serverLog(1, "uin: " + user.uin + " | name: " + user.username + ".");
+  serverLog(1, "socket: " + user.socket + " | name: " + user.username + ".");
   serverLog(1, "connected: " + user.connected + "| color: " + user.color);
   return user;
 }

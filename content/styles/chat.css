@@ -43,11 +43,13 @@ a:hover, a:focus {
 	margin-top: 10px;
 }
 
-#chatLabel {
+.chatLabel {
 	text-align: center;
 	vertical-align: bottom;
-	margin-top: 5px;
 	font-size: 12px;
+	padding: 0;
+	margin-top: 2px;
+	word-wrap: break-word;
 }
 
 #message, #sendMessage, #chatLabel {

@@ -41,7 +41,7 @@
 					<form id="userSettings" class="nav navbar-nav navbar-right form-inline" action="">
 						<div class="form-group">
 							<label for="setUserName">Username</label>
-							<input class="form-control" type="text" id="setUserName" name="setUserName" placeholder="Desired username" />
+							<input class="form-control" type="text" id="setUserName" name="setUserName" placeholder="Desired username" autocomplete="off" />
 						</div>
 						<button type="submit" class="btn btn-primary">Apply</button>
 					</form>
@@ -59,8 +59,8 @@
 		<footer id="footer">
 			<div class="container-fluid">
 				<form id="chatbox" class="form-inline" action="">
-					<div class="col-md-1 col-sm-12 col-xs-12">
-						<label id="chatLabel" for="message">Masq.</label>
+					<div class="col-md-1 col-sm-12 col-xs-12 chatLabel">
+						<label id= "chatLabel" class="chatLabel" for="message"></label>
 					</div>
 					<div class="col-sm-9 col-xs-12">
 						<input type="text" id="message" name="message" placeholder="Type your message here..." class="form-control" autocomplete="off" />
