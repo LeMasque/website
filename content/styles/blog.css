@@ -15,6 +15,7 @@
 body {
 	color: #7800E3;
 	background: url("/images/background.png");
+	background-size: 100vw 200vh;
 }
 
 a {
@@ -29,33 +30,35 @@ a:hover, a:focus {
 	color: #CCCC00;
 }
 
-.parallax {
-	position: absolute;
-	width: 100%;
-	top: 0;
-	opacity: 0.9;
-	height: 4000px;
-}
+@media all and (min-width: 992px) {
+	.parallax {
+		position: absolute;
+		width: 100%;
+		top: 0;
+		opacity: 0.9;
+		height: 4000px;
+	}
 
-#moon {
-	background: url("/images/moon.png") fixed no-repeat;
-	background-position: -80% -220px;
-	background-size: 60% 90%;
-	z-index: -1;
-}
+	#moon {
+		background: url("/images/moon.png") fixed no-repeat;
+		background-position: -80% -220px;
+		background-size: 60% 90%;
+		z-index: -1;
+	}
 
-#jupiter {
-	background: url("/images/jupiter.png") fixed no-repeat;
-	background-position: 92% 400px;
-	background-size: 60px 60px;
-	z-index: -2;
-}
+	#jupiter {
+		background: url("/images/jupiter.png") fixed no-repeat;
+		background-position: 92% 400px;
+		background-size: 60px 60px;
+		z-index: -2;
+	}
 
-#comet {
-	background: url("/images/comet.png") fixed no-repeat;
-	background-position: 110% 1100px;
-	background-size: 250px 250px;
-	z-index: -3;
+	#comet {
+		background: url("/images/comet.png") fixed no-repeat;
+		background-position: 110% 1100px;
+		background-size: 250px 250px;
+		z-index: -3;
+	}
 }
 
 /*********** BLOG POST STUFF ***************/

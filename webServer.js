@@ -10,9 +10,11 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var logger = require("morgan");
 var chalk = require("chalk");
+var qs = require("querystring");
+var fs = require("fs");
+var bodyParser = require("body-parser");
 
 var serverPort = 8000;
-__dirname += "/content";
 
 /*
  *	String.startsWith polyfill
@@ -24,12 +26,15 @@ if (!String.prototype.startsWith) {
 	};
 }
 
-permitAccessTo("/styles");
-permitAccessTo("/scripts");
-permitAccessTo("/views");
-permitAccessTo("/images");
+permitAccessTo("/content/styles");
+permitAccessTo("/content/scripts");
+permitAccessTo("/content/views");
+permitAccessTo("/content/images");
 
 app.use(logger("dev")); // enable logging
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({"extended": true}));
 
 http.listen(serverPort, function(){
 	serverLog(1, "Server listening on *:" + serverPort);
@@ -41,11 +46,52 @@ var num = 0;
 /********************************** ROUTING **********************************/
 
 app.get("/", function(req, res) {
-	res.sendFile(__dirname + "/views/index.html");
+	res.sendFile(__dirname + "/content/views/main.html");
+});
+
+app.get(/\/styles\/(.*)/, function(req, res) {
+  res.sendFile(__dirname + "/content/styles/" + req.params[0]);
+});
+
+app.get(/\/scripts\/(.*)/, function(req, res) {
+  res.sendFile(__dirname + "/content/scripts/" + req.params[0]);
+});
+
+app.get(/\/images\/(.*)/, function(req, res) {
+  res.sendFile(__dirname + "/content/images/" + req.params[0]);
 });
 
 app.get("/chat", function(req, res) {
-	res.sendFile(__dirname + "/views/chat.html");
+	res.sendFile(__dirname + "/content/views/chat.html");
+});
+
+app.get("/weblog", function(req, res) {
+  res.sendFile(__dirname + "/content/views/blog.html");
+});
+
+app.post("/contact", function(req, res) {
+  var name = req.body.name;
+  var email = req.body.email;
+  var msg = req.body.msg;
+  if (name.trim() && msg.trim() && email.trim()) {
+    var time = new Date();
+    var info = ("" + time).split(" ").slice(1, -2);
+    var dir = __dirname + "/messages/" +info[1] + "_" + info[0] + "_" + info[2]; // day_monthName_year/
+    var file = "/" + name + "_" + info[3]; // name_timestamp
+    fs.existsSync(dir) || fs.mkdirSync(dir);
+    fs.writeFile(dir + file, msg+"\n", "utf8", function(err) {
+      if (err) {
+        minorError(err);
+        res.sendStatus(409); // Conflict error, maybe try resubmitting...
+      } else {
+        serverLog(4, name + " sent you a message, it has been recorded at " + (dir + file));
+        res.sendStatus(200); // Success!
+      }
+    });
+  } else {
+    serverLog(0, "empty message sent: " + name + " " + email + " " + msg);
+    res.sendStatus(400) // bad request error, modify your request
+  }
 });
 
 /****************************** EVENT HANDLERS *******************************/
@@ -77,6 +123,12 @@ io.on("connection", function(socket){
     }
     io.sockets.connected[user.socket].emit("chat setName", cool, desired);
   });
+
+  socket.on("contactMessage", function(details) {
+    serverLog(1, details.a + "\n" + details.b + "\n" + details.c);
+  });
+
+
 	socket.on("disconnect", function() {
 		serverLog(0, "user disconnected");
 	});

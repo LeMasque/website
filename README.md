@@ -1,4 +1,5 @@
 # spencerwalden.net
 
-This is my personal website... up on git to have better version control, tracking,
-etc.
+This is a repository for the version control and tracking of my own personal website.
+
+It is currently hosted at spencerwalden.net, but that may change over time.

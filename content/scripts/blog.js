@@ -2,7 +2,7 @@
 
   "use strict";
   window.onload = function() {
-    $(window).scroll(scroll);
+    window.onscroll = scroll;
   };
 
   function scroll() {
@@ -10,9 +10,9 @@
     for (var i = 0; i < bodies.length; i++) {
       var body = bodies[i];
       var curCoords = getBackgroundPos(body);
-      console.log(curCoords);
+      //console.log(curCoords);
       if (body.dataset.xspeed > 0) {
-        console.log("xspeed: " + body.dataset.xspeed);
+        //console.log("xspeed: " + body.dataset.xspeed);
         var xPos = -(window.scrollY / body.dataset.xspeed); 
       };
       var newX = ((xPos ? xPos : 0) + body.xOffset) + curCoords.xUnit;
@@ -20,7 +20,7 @@
       var newY = (yPos + body.yOffset) + curCoords.yUnit;
 
       var newCoords = newX + " " + newY;
-      console.log(body.id + ": " + newCoords);
+      //console.log(body.id + ": " + newCoords);
 
       body.style.backgroundPosition = newCoords;
     }; // end window scroll

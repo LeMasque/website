@@ -1,0 +1,163 @@
+/*
+*/
+
+.navbar {
+	/*top: 3px;*/
+	border-bottom: 1px solid darkgrey;
+	margin-bottom: 0;
+	background-color: #FFF;
+}
+
+body {
+	color: #7800E3;
+}
+
+a {
+	color: #5600A2;
+}
+/*
+a:visited {
+	color: #A641FF;
+}
+*/
+a:hover, a:focus {
+	color: #CCCC00;
+}
+
+/******************** About **********************/
+
+main {
+	color: #F5F3F5;
+}
+
+.info {
+	position: relative;
+	width: 100%;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-size: cover;
+	background-position: 50% 0;
+	height: 100vh;
+	overflow: hidden;
+}
+
+.content {
+	position: absolute;
+	padding: 0 15px;
+}
+
+#one {
+	top: 0;
+	left: 0;
+	padding: 0;
+	background-image: url("https://source.unsplash.com/fnshKX39yV8/1600x900");
+	background-color: green;
+	background-position: center 0px;
+}
+
+#one .content, #contact .content {
+	background: linear-gradient(to right, rgba(51,51,51,0.0), rgba(51,51,51,0.9), rgba(51,51,51,0.0));
+	background-size: cover;
+	margin: 0 auto;
+	padding: 10px;
+	top: 50%;
+	transform: translateY(-75%);
+}
+
+#two {
+	z-index: 1;
+	background-color: blue;
+	background-image: url("https://source.unsplash.com/7_cSSarxoAA/1600x900");
+	background-position: center 0px;
+	/* /IisDI6liZEM */
+}
+
+#two .content {
+	bottom: 0;
+	top: 0;
+	right: 0;
+	background-color: rgba(51,51,51,0.85);
+	border-left: 5px solid #d9534f; /* danger */
+}
+
+
+#three {
+	z-index: 2;
+	background-color: teal;
+	background-image: url("https://source.unsplash.com/oMpAz-DN-9I/1600x900");
+	background-position: center 0px;
+}
+
+#three .content {
+	top: 0;
+	bottom: 0;
+	left: 0;
+	background-color: rgba(51,51,51,0.85);
+	border-right: 5px solid #337ab7;  /*primary*/
+	padding: 15px;
+}
+
+@media all and (max-width: 992px) { /* small devices */
+	#two .content {
+		top: auto !important;
+		border-left: 0;
+		border-top: 5px solid #d9534f;
+	}
+	#three .content {
+		top: auto !important;
+		border-right: 0;
+		border-top: 5px solid #337ab7;  /*primary*/
+	}
+}
+
+@media all and (min-width: 992px) { /* large devices */
+	#two .content h1, #two .content p {
+		padding: 10px 15px;
+	}
+	#three .content h1, #three .content p {
+		padding: 10px 15px;
+	}
+}
+
+#contact {
+	z-index: 3;
+	padding: 0;
+	top: 0;
+	left: 0;
+	background-image: url("https://source.unsplash.com/jLwVAUtLOAQ/1600x900");
+	background-color: brown;
+	background-position: center 0px;
+}
+
+#contact .content {
+	background: linear-gradient(to right, rgba(51,51,51,0.0), rgba(51,51,51,0.7), rgba(51,51,51,0.0));
+	transform: translateY(-30%);
+	padding: 15px 0;
+	width: 100%;
+}
+
+#contact button {
+	float: right;
+}
+
+.clearfix {
+	display: inline-block;
+}
+
+h1 {
+	margin-bottom: 20px;
+}
+
+#messageStatus {
+	border-radius: 8px;
+	padding: 10px;
+	font-size: 12pt;
+	margin-bottom: 15px;
+	display: hidden;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.modal-dialog {
+	z-index: 1000;
+}
