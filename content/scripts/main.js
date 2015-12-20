@@ -54,7 +54,8 @@
     var name = document.getElementById("name").value;
     var email = document.getElementById("email").value;
     var msg = document.getElementById("msg").value;
-    var params = "name="+name+"&email="+email+"&msg="+msg;
+    var cap = grecaptcha.getResponse();
+    var params = "name="+name+"&email="+email+"&msg="+msg+"&cap="+cap;
 
     xhr.onload = messageStatusReport;
     xhr.onError = networkFail;
@@ -88,7 +89,7 @@
     setTimeout(function() {
       //msgStatus.classList.remove("bg-success", "bg-danger");
       $("#messageStatus").modal("hide");
-    }, 10000);
+    }, 12500);
   }
 
   function networkFail(error) {

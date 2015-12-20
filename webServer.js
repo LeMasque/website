@@ -6,15 +6,18 @@
 
 var express = require("express");
 var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var server = require("http").Server(app);
+var https = require("https");
+var io = require("socket.io")(server);
 var logger = require("morgan");
 var chalk = require("chalk");
 var qs = require("querystring");
 var fs = require("fs");
 var bodyParser = require("body-parser");
 
-var serverPort = 8000;
+var SERVER_PORT = 8000;
+var CAPTCHA_SERVER_SECRET = "6LeuSxMTAAAAABDbbvoU4zY2TimpaKjtFu_ak4nC";
+
 
 /*
  *	String.startsWith polyfill
@@ -36,8 +39,9 @@ app.use(logger("dev")); // enable logging
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({"extended": true}));
 
-http.listen(serverPort, function(){
-	serverLog(1, "Server listening on *:" + serverPort);
+server.listen(SERVER_PORT, function(){
+	// hostname unspecified here assumes 0.0.0.0, i.e. all IP's, so putting *.
+	serverLog(1, "Server listening on *:" + SERVER_PORT);
 });
 
 var chatUsers = {};
@@ -73,21 +77,49 @@ app.post("/contact", function(req, res) {
   var name = req.body.name;
   var email = req.body.email;
   var msg = req.body.msg;
-  if (name.trim() && msg.trim() && email.trim()) {
-    var time = new Date();
-    var info = ("" + time).split(" ").slice(1, -2);
-    var dir = __dirname + "/messages/" +info[1] + "_" + info[0] + "_" + info[2]; // day_monthName_year/
-    var file = "/" + name + "_" + info[3]; // name_timestamp
-    fs.existsSync(dir) || fs.mkdirSync(dir);
-    fs.writeFile(dir + file, msg+"\n", "utf8", function(err) {
-      if (err) {
-        minorError(err);
-        res.sendStatus(409); // Conflict error, maybe try resubmitting...
-      } else {
-        serverLog(4, name + " sent you a message, it has been recorded at " + (dir + file));
-        res.sendStatus(200); // Success!
-      }
-    });
+  var cliCaptcha = req.body.cap;
+  //serverLog(1, "request body: " + JSON.stringify(req.body));
+  if (name.trim() && msg.trim() && email.trim() && cliCaptcha.trim()) {
+    var postData = "";
+    var options = {
+      "hostname": "www.google.com",
+      "method": "POST", // LITERALLY FUCKING RETARDED; this isn't a post request. make up your mind, google.
+      "port": 443,
+      "path": "/recaptcha/api/siteverify?secret="+CAPTCHA_SERVER_SECRET+"&response="+cliCaptcha
+    }
+	  var serCaptcha = https.request(options, function(response) {
+      var result = "";
+      response.on("error", minorError);
+      response.on("data", function(chunk) {
+        result += chunk;
+      });
+      response.on("end", function() {
+        try {
+          var jason = JSON.parse(result);
+          if (jason.success) {
+            var time = new Date();
+            var info = ("" + time).split(" ").slice(1, -2);
+            var dir = __dirname + "/messages/" +info[1] + "_" + info[0] + "_" + info[2]; // day_monthName_year/
+            var file = "/" + name + "_" + info[3]; // name_timestamp
+            fs.existsSync(dir) || fs.mkdirSync(dir);
+            fs.writeFile(dir + file, msg+"\n", "utf8", function(err) {
+              if (err) {
+                minorError("File write error: " + err);
+                res.sendStatus(409); // Conflict error, maybe try resubmitting...
+              } else {
+                serverLog(4, name + " sent you a message, it has been recorded at " + (dir + file));
+                res.sendStatus(200); // Success!
+              }
+            });
+          } else {
+            serverLog(-1, "captcha failure: " + jason.success);
+          }
+        } catch(e) {
+          minorError("Caught error: " + e);
+        }
+      });
+	  });
+	  serCaptcha.end(postData);
   } else {
     serverLog(0, "empty message sent: " + name + " " + email + " " + msg);
     res.sendStatus(400) // bad request error, modify your request
@@ -220,7 +252,7 @@ function warn(message) {
  *	Call me if there was a problem but you don't need to kill the server.
  */ 
 function minorError(message) {
-	serverLog(-1, message);
+	serverLog(-1, "" + message);
 }
 
 /*

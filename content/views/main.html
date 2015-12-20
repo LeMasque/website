@@ -16,6 +16,7 @@
 
 		<script src="/scripts/bsjs/bootstrap.min.js" type="text/javascript"></script>
 		<script src="/socket.io/socket.io.js" type="text/javascript"></script>
+		<script src='https://www.google.com/recaptcha/api.js' type="text/javascript"></script>
 		<script src="/scripts/main.js" type="text/javascript"></script>
 
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -109,10 +110,6 @@
 						<p>
 							If you want to get in contact with me, send me a message;<br />
 							I'll get back to you as soon as I can! 
-							<details>
-								Unless you're some kind of spam bot or something; if that's the case, I 
-								<em>WON'T</em> get back to you. So <strong>yeah</strong>... take that, spam!
-							</details>
 						</p>
 						<form id="cForm" action=""> <!-- TODO: -->
 							<div class="form-group clearfix">
@@ -127,6 +124,7 @@
 									<textarea id="msg" class="form-control clearfix" name="msg"></textarea>
 								</div> <!-- end of textarea --> 
 							</div> <!-- end of form-group -->
+							<div class="g-recaptcha clearfix" data-sitekey="6LeuSxMTAAAAAEuDdIV1v_dC0WQzYtwUEqfwiUDm"></div>
 							<button id="cMessage" type="submit" class="btn btn-danger clearfix">Send message!</button>
 						</form>
 					</div>
