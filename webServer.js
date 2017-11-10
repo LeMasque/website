@@ -16,7 +16,7 @@ var fs = require("fs");
 var bodyParser = require("body-parser");
 
 var SERVER_PORT = 8000;
-var CAPTCHA_SERVER_SECRET = "6LeuSxMTAAAAABDbbvoU4zY2TimpaKjtFu_ak4nC";
+var CAPTCHA_SERVER_SECRET = "";
 
 
 /*
